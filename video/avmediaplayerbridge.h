@@ -8,9 +8,9 @@ class AVMediaPlayerBridge : public MediaPlayerBridge
 public:
     Q_INVOKABLE AVMediaPlayerBridge(QObject *parent = nullptr);
 
-    virtual QObject *createMediaPlayer(QString url) override;
+    virtual QObject *createPlayer() override;
 
-    virtual QWidget *createSurfaceView() override;
+    virtual QWidget *createSurface() override;
 };
 
 #endif // AVMEDIAPLAYERBRIDGE_H

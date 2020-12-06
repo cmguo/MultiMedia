@@ -1,18 +1,22 @@
-﻿#include "videocontrol.h"
-#include "core/resourceview.h"
-#include "core/resource.h"
-#include "core/optiontoolbuttons.h"
+#include "videocontrol.h"
+#include <video/avmediaplayerbridge.h>
+#include <video/mediaplayer.h>
+#include <video/qtmediaplayerbridge.h>
+
+#include <core/resourceview.h>
+#include <core/resource.h>
+#include <core/optiontoolbuttons.h>
 #include <core/resourcepackage.h>
 #include <core/resourcepage.h>
 #include <core/toolbutton.h>
-#include <media/avmediaplayerbridge.h>
 #include <views/whitecanvas.h>
 #include <views/whitecanvaswidget.h>
+#include <showboard.h>
+
+#include <qcomponentcontainer.h>
 
 #include <QMediaService>
 #include <QWindow>
-
-#include <media/mediaplayer.h>
 
 static constexpr char const * toolstr =
         "play()|播放|NeedUpdate,Checkable|;"
@@ -32,7 +36,9 @@ VideoControl::VideoControl(ResourceView * res)
                     DelayApplySize}, {CanRotate})
     , playerBridge_(nullptr)
     , player_(nullptr)
+    , controller_(nullptr)
     , fullScreenWidget_(nullptr)
+    , autoPlay_(false)
 {
 #ifdef QT_DEBUG
     setToolsString(toolstr);
@@ -50,67 +56,106 @@ VideoControl::~VideoControl()
 
 bool VideoControl::isFullScreen() const
 {
-    return res_->url()==QString("video:full");
+    return res_->url() == QUrl("video:full");
 }
 
+bool VideoControl::autoPlay() const
+{
+    return autoPlay_;
+}
 
-QObject *VideoControl::mediaPlayer() const
+void VideoControl::setAutoPlay(bool autoPlay)
+{
+    autoPlay_ = autoPlay;
+    emit autoPlayChanged();
+}
+
+QObject *VideoControl::player() const
 {
     return player_;
+}
+
+QVariant VideoControl::controller() const
+{
+    if (controller_)
+        return QVariant::fromValue(controller_);
+    return res_->property("controller");
+}
+
+void VideoControl::setController(const QVariant &c)
+{
+    delete controller_;
+    controller_ = nullptr;
+    if (auto ct = c.value<QWidget*>()) {
+        controller_ = ct;
+        controller_->setParent(widget_);
+    } else {
+        auto ct2 = qobject_cast<QWidget*>(
+                    ShowBoard::containter().getExportValue(c.toByteArray()));
+        controller_ = ct2;
+        controller_->setParent(widget_);
+        bindTouchEventToChild(controller_);
+    }
 }
 
 QWidget *VideoControl::createWidget(ControlView *parent)
 {
     Q_UNUSED(parent)
-    player_ = res_->property("player").value<QObject*>();
-    if(!player_){
-        player_ = playerBridge_->createMediaPlayer(res_->resource()->url().toString());
-        player_->setParent(this);
-    }
-    QWidget * surfaceView = playerBridge_->createSurfaceView();
-    surfaceView->resize(640, 360);
-    player_->setProperty("surfaceView", QVariant::fromValue(surfaceView));
-    connect(surfaceView,&QObject::destroyed,this,[this](){
-        widget_ = nullptr;
-    });
-    return surfaceView;
+    QWidget * surface = playerBridge_->createSurface();
+    surface->resize(640, 360);
+    return surface;
 }
 
 void VideoControl::attached()
 {
+    player_ = res_->property("player").value<QObject*>();
+    if (!player_) {
+        player_ = playerBridge_->createPlayer();
+        player_->setParent(this);
+    }
+    player_->setProperty("surface", QVariant::fromValue(widget_));
+    if (controller_ == nullptr) {
+        setController("VideoController");
+    }
     if (!isFullScreen()) {
         player_->setProperty("position",
                              res_->property("position"));
-        connect(player_, SIGNAL(videoStateChanged()),
-                this, SLOT(loaded()));
+        connect(player_, SIGNAL(playStateChanged()),
+                this, SLOT(playStateChanged()));
+        player_->setProperty("source", res_->resource()->url());
     } else {
         loadFinished(true);
         // 暂停情况下截图，fix全屏黑屏
-        if(isFullScreen() && player_->property("videoState").toInt() == MediaPlayer::State::PausedState){
-            player_->setProperty("videoState",MediaPlayer::State::PlayingState);
-            player_->setProperty("videoState",MediaPlayer::State::PausedState);
+        if (isFullScreen() && player_->property("playState").toInt() == MediaPlayer::State::PausedState){
+            player_->setProperty("playState", MediaPlayer::State::PlayingState);
+            player_->setProperty("playState", MediaPlayer::State::PausedState);
         }
     }
 }
 
-void VideoControl::detached()
-{   
+void VideoControl::detaching()
+{
+    delete controller_;
+    controller_ = nullptr;
     res_->setProperty("position", player_->property("position"));
-    player_->setProperty("surfaceView", QVariant());
-    if(!isFullScreen())
-       player_->setProperty("videoState", static_cast<int>(MediaPlayer::StoppedState));
+    if (!isFullScreen()) {
+        player_->setProperty("surface", QVariant());
+        player_->setProperty("playState", static_cast<int>(MediaPlayer::StoppedState));
+        delete player_;
+    }
+    player_ = nullptr;
 }
 
 void VideoControl::fullScreen(bool)
 {
     if (!flags_.testFlag(LoadFinished))
         return;
-    if (player_->parent() != this) {
+    if (isFullScreen()) {
         QTimer::singleShot(0, this, [this] () {
             VideoControl * another = qobject_cast<VideoControl*>(player_->parent());
             ResourcePackage *pkgage =  qobject_cast<WhiteCanvasWidget*>(another->fullScreenWidget_)->package();
             pkgage->removePage(res_->page());
-            another->player_->setProperty("surfaceView", QVariant::fromValue(another->widget()));
+            another->player_->setProperty("surface", QVariant::fromValue(another->widget()));
             another->fullScreenWidget_->hide();
         });
         return;
@@ -135,17 +180,53 @@ void VideoControl::fullScreen(bool)
                                });
 }
 
-void VideoControl::loaded()
+void VideoControl::play()
 {
+    int state = player_->property("playState").toInt();
+    if (state == MediaPlayer::PlayingState)
+        state = MediaPlayer::PausedState;
+    else
+        state = MediaPlayer::PlayingState;
+    player_->setProperty("playState", state);
+}
+
+void VideoControl::seek()
+{
+    player_->setProperty("position", player_->property("position").toInt() + 10000);
+}
+
+void VideoControl::stop()
+{
+    player_->setProperty("playState", static_cast<int>(MediaPlayer::StoppedState));
+}
+
+void VideoControl::fullScreen()
+{
+    fullScreen(true);
+}
+
+void VideoControl::updateToolButton(ToolButton *button)
+{
+    if (button->name() == "play()") {
+        int state = player_->property("playState").toInt();
+        bool playing = state == MediaPlayer::PlayingState;
+        button->setChecked(playing);
+        button->setText(playing ? "暂停" : "播放");
+    }
+    Control::updateToolButton(button);
+}
+
+void VideoControl::playStateChanged()
+{
+    buttonsChanged();
     if (flags_.testFlag(LoadFinished)
-            || player_->property("videoState").toInt() != MediaPlayer::State::PreparedState)
+            || player_->property("playState").toInt() != MediaPlayer::State::PreparedState)
         return;
-    QSizeF size = player_->property("videoSize").toSizeF();
-    if(!size.isEmpty())
+    QSize size = player_->property("videoSize").toSize();
+    if (!size.isEmpty())
         resize(size);
     loadFinished(true);
 }
-
 
 class PlayRateOptionButtons : public OptionToolButtons
 {

@@ -10,12 +10,12 @@ class MediaPlayer:public QObject
     Q_ENUMS(State)
 public:
     enum State {
-        UnknownStatus = 0,
-        StoppedState,
+        IdleState = 0,
+        ErrorState,
+        PreparedState,
         PlayingState,
         PausedState,
-        LoadingState,
-        PreparedState
+        StoppedState,
     };
 public:
     MediaPlayer(QObject *parent = nullptr);

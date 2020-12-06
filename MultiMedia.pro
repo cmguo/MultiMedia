@@ -32,7 +32,7 @@ include(resources/resources.pri)
 include(controls/controls.pri)
 include(opengl/opengl.pri)
 include(web/web.pri)
-include(media/media.pri)
+include(video/video.pri)
 
 win32 {
     include(office/office.pri)

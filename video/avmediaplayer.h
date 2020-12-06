@@ -2,28 +2,34 @@
 #define AVMEDIAPLAYER_H
 
 #include "mediaplayer.h"
+
 #include <QtAV/AVPlayer.h>
 #include <QtAVWidgets/VideoPreviewWidget.h>
+
+#include <QUrl>
+#include <QSize>
 
 using namespace QtAV;
 
 class AVMediaPlayer : public AVPlayer
 {
     Q_OBJECT
+
     Q_PROPERTY(qint64 position READ position WRITE setPosition NOTIFY positionChanged)
     Q_PROPERTY(qreal volume READ volume WRITE setVolume NOTIFY volumeChanged)
     Q_PROPERTY(bool muted READ isMuted WRITE setMuted NOTIFY mutedChanged)
-    Q_PROPERTY(QString source READ source WRITE setSource NOTIFY sourceChanged)
-    Q_PROPERTY(MediaPlayer::State videoState READ videoState WRITE setVideoState NOTIFY videoStateChanged)
-    Q_PROPERTY(QWidget* surfaceView READ surfaceView WRITE setSurfaceView NOTIFY surfaceViewChange)
-    Q_PROPERTY(QSizeF videoSize READ videoSize NOTIFY videoSizeChanged)
-    Q_PROPERTY(bool autoPlay READ autoPlay WRITE setAutoPlay NOTIFY autoPlayChanged)
-public:
+    Q_PROPERTY(QUrl source READ source WRITE setSource NOTIFY sourceChanged)
+    Q_PROPERTY(MediaPlayer::State playState READ playState WRITE setPlayState NOTIFY playStateChanged)
+    Q_PROPERTY(QWidget* surface READ surface WRITE setSurface NOTIFY surfaceChanged)
+    Q_PROPERTY(QSize videoSize READ videoSize NOTIFY videoSizeChanged)
+    Q_PROPERTY(QString error READ errorString)
 
+public:
     Q_INVOKABLE AVMediaPlayer(QObject * parent =nullptr);
 
     virtual ~AVMediaPlayer() override;
 
+public:
     qreal volume() const;
 
     void setVolume(qreal value);
@@ -32,44 +38,41 @@ public:
 
     void setMuted(bool m);
 
-    QString source() const;
+    QUrl source() const;
 
-    void setSource(const QString source);
+    void setSource(const QUrl & source);
 
-    QWidget* surfaceView();
+    QWidget* surface();
 
-    void setSurfaceView(QWidget *);
+    void setSurface(QWidget *);
 
-    MediaPlayer::State videoState()const;
+    MediaPlayer::State playState()const;
 
-    void setVideoState(MediaPlayer::State state);
+    void setPlayState(MediaPlayer::State state);
 
-    QSizeF videoSize() const;
-
-    bool autoPlay()const;
-
-    void setAutoPlay(bool autoPlay);
+    QSize videoSize() const;
 
     void setPosition(qint64 pos);
 
     qint64 position() const;
 
+    QString errorString() const;
+
 Q_SIGNALS:
     void volumeChanged();
     void mutedChanged();
-    void surfaceViewChange();
-    void videoStateChanged();
+    void surfaceChanged();
+    void playStateChanged();
     void videoSizeChanged();
-    void autoPlayChanged();
-    void positionChanged();
+    void positionChanged(qint64 position);
 
 private Q_SLOTS:
     void applyVolume();
 
 private:
+    QtAV::AVError error_;
     qreal volume_;
     bool mute_;
-    bool autoPlay_;
     bool preparedState_;
     bool loaded_;
     VideoPreviewWidget *preview_;

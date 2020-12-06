@@ -10,9 +10,9 @@ class MediaPlayerBridge : public QObject
 public:
     explicit MediaPlayerBridge(QObject *parent =nullptr);
 
-    virtual QObject * createMediaPlayer(QString url) = 0;
+    virtual QObject * createPlayer() = 0;
 
-    virtual QWidget * createSurfaceView() = 0;
+    virtual QWidget * createSurface() = 0;
 };
 
 #endif // MEDIAPLAYERBRIDGE_H

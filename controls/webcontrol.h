@@ -1,12 +1,12 @@
 #ifndef WEBCONTROL_H
 #define WEBCONTROL_H
 
-#include "widgetcontrol.h"
+#include <controls/widgetcontrol.h>
 
 #include <QColor>
 #include <QHash>
 
-class SHOWBOARD_EXPORT WebControl : public WidgetControl
+class WebControl : public WidgetControl
 {
     Q_OBJECT
 

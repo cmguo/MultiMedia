@@ -1,14 +1,12 @@
 #ifndef WORD_H
 #define WORD_H
 
-#include "ShowBoard_global.h"
-
 #include <QObject>
 #include <QPixmap>
 
 class QAxObject;
 
-class SHOWBOARD_EXPORT Word : public QObject
+class Word : public QObject
 {
     Q_OBJECT
 public:

@@ -1,12 +1,11 @@
 #ifndef VIDEOCONTROL_H
 #define VIDEOCONTROL_H
 
-#include "core/control.h"
-
-#include "widgetcontrol.h"
+#include <controls/widgetcontrol.h>
 
 class MediaPlayerBridge;
-class SHOWBOARD_EXPORT VideoControl : public WidgetControl
+
+class VideoControl : public WidgetControl
 {
     Q_OBJECT
     Q_PROPERTY(bool fullScreen READ isFullScreen WRITE fullScreen NOTIFY fullScreenChanged)

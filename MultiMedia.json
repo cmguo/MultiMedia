@@ -1,0 +1,53 @@
+{
+    "Keys" : [
+        "Strokes/1.0",
+        "DocxControl/1.0",
+        "PptxControl/1.0",
+        "WebControl/1.0",
+        "ImageControl/1.0",
+        "TextControl/1.0"
+    ],
+    "Exports" : [{
+        "meta": "Strokes/1.0",
+        "type": "ResourceView/1.0",
+        "attrs": {
+            "mineType": "stroke,glstroke"
+        }
+    }, {
+        "meta": "DocxControl/1.0",
+        "type": "Control/1.0",
+        "attrs": {
+            "mineType": "doc,docx"
+        }
+    }, {
+        "meta": "PptxControl/1.0",
+        "type": "Control/1.0",
+        "attrs": {
+            "mineType": "ppt,pptx"
+        }
+    }, {
+        "meta": "WebControl/1.0",
+        "type": "Control/1.0",
+        "attrs": {
+            "mineType": "htm,html,http,https,chrome,swf"
+        }
+    }, {
+        "meta": "ImageControl/1.0",
+        "type": "Control/1.0",
+        "attrs": {
+            "mineType": "image,bmp,gif,jpg,jpeg,png,svg"
+        }
+    }, {
+        "meta": "TextControl/1.0",
+        "type": "Control/1.0",
+        "attrs": {
+            "mineType": "text,txt,js,cpp,h,qss,css"
+        }
+    }, {
+        "meta": "VideoControl/1.0",
+        "type": "Control/1.0",
+        "attrs": {
+            "mineType": "video,mp4,wmv,webm,ts,flv,m3u8,asf,avi,audio,mp3,wma,wav,m4a,rtsp,rtmp,rtp"
+        }
+    }]
+}

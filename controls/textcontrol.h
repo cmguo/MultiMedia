@@ -1,7 +1,7 @@
 #ifndef TEXTCONTROL_H
 #define TEXTCONTROL_H
 
-#include "widgetcontrol.h"
+#include <controls/widgetcontrol.h>
 
 #include <QPoint>
 

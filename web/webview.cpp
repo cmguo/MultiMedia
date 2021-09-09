@@ -258,9 +258,10 @@ QPaintEngine *WebView::paintEngine() const
 
 QWebEngineView *WebView::createWindow(QWebEnginePage::WebWindowType)
 {
+    WebControl * control = qobject_cast<WebControl*>(Control::fromItem(graphicsProxyWidget()));
     WhiteCanvas * canvas = static_cast<WhiteCanvas*>(
-                graphicsProxyWidget()->parentItem()->parentItem());
-    WebControl * control = qobject_cast<WebControl*>(
+                control->item()->parentItem()->parentItem());
+    control = qobject_cast<WebControl*>(
                 canvas->addResource(QUrl(), {{"resourceType", "html"},{"sizeHint",QSizeF(0.95,0.95)}}));
     return static_cast<WebView*>(control->widget());
 }

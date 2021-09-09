@@ -1,10 +1,12 @@
-#include "inputtextcontrol.h"
+#include "textinputcontrol.h"
+
+#include <core/resourceview.h>
+#include <core/optiontoolbuttons.h>
+
 #include <QBrush>
 #include <QGraphicsTextItem>
-#include "../core/resourceview.h"
 #include <QFont>
 #include <QObject>
-#include <core/optiontoolbuttons.h>
 #include <QGraphicsPolygonItem>
 
 static char const * toolstr =
@@ -13,50 +15,51 @@ static char const * toolstr =
         "test()|测试|;"
         #endif
         ;
-static ColorToolButtons colorButtons({Qt::white, Qt::black, Qt::red, Qt::green, Qt::blue, Qt::yellow});
-REGISTER_OPTION_BUTTONS(InputTextControl, color, colorButtons)
 
-InputTextControl::InputTextControl(ResourceView *res, Control::Flags flags, Control::Flags clearFlags) :
+static ColorToolButtons colorButtons({Qt::white, Qt::black, Qt::red, Qt::green, Qt::blue, Qt::yellow});
+REGISTER_OPTION_BUTTONS(TextInputControl, color, colorButtons)
+
+TextInputControl::TextInputControl(ResourceView *res, Control::Flags flags, Control::Flags clearFlags) :
     Control(res, flags, clearFlags)
 {
 
     // text2:
 }
 
-QColor InputTextControl::getColor()
+QColor TextInputControl::getColor()
 {
     DiagramTextItem *item = qgraphicsitem_cast<DiagramTextItem *>(item_);
     return item->defaultTextColor();
 }
 
-void InputTextControl::setColor(QColor color)
+void TextInputControl::setColor(QColor color)
 {
     DiagramTextItem *item = qgraphicsitem_cast<DiagramTextItem *>(item_);
     item->setDefaultTextColor(color);
 }
 
-void InputTextControl::test()
+void TextInputControl::test()
 {
 
 }
 
-ControlView *InputTextControl::create(ControlView *parent)
+ControlView *TextInputControl::create(ControlView *parent)
 {
     DiagramTextItem* item = new DiagramTextItem;
     return item;
 }
 
-void InputTextControl::attached()
+void TextInputControl::attached()
 {
     loadFinished(true);
 }
 
-void InputTextControl::copy(QMimeData &data)
+void TextInputControl::copy(QMimeData &data)
 {
 
 }
 
-QString InputTextControl::toolsString(const QByteArray &parent) const
+QString TextInputControl::toolsString(const QByteArray &parent) const
 {
     if (parent.isEmpty()) {
         return toolstr;

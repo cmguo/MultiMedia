@@ -5,7 +5,7 @@ win32 { QT += axcontainer }
 TEMPLATE = lib
 CONFIG += plugin
 
-CONFIG += c++11
+CONFIG += c++14
 
 include(../config.pri)
 

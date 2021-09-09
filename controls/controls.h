@@ -9,6 +9,7 @@
 #include "pptxcontrol.h"
 #include "docxcontrol.h"
 #include "textcontrol.h"
+#include "textinputcontrol.h"
 #include "wordscontrol.h"
 
 #include <qexport.h>
@@ -23,6 +24,7 @@ REGISTER_CONTROL(StrokeControl, "glstroke")
 #endif
 REGISTER_CONTROL(WebControl, "htm,html,http,https,chrome,swf")
 REGISTER_CONTROL(TextControl, "text,txt,js,cpp,h,qss,css")
+REGISTER_CONTROL(TextInputControl, "textinput")
 REGISTER_CONTROL(WordsControl, "words")
 
 #ifdef WIN32

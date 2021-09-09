@@ -1,7 +1,6 @@
 #include "videocontrol.h"
-#include <video/avmediaplayerbridge.h>
 #include <video/mediaplayer.h>
-#include <video/qtmediaplayerbridge.h>
+#include <video/mediaplayerbridge.h>
 
 #include <core/resourceview.h>
 #include <core/resource.h>
@@ -45,7 +44,7 @@ VideoControl::VideoControl(ResourceView * res)
 #else
     (void) toolstr;
 #endif
-    playerBridge_ = new AVMediaPlayerBridge(this);
+    //playerBridge_ = new AVMediaPlayerBridge(this);
 }
 
 VideoControl::~VideoControl()

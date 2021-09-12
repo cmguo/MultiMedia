@@ -5,8 +5,7 @@ HEADERS += \
     $$PWD/textcontrol.h \
     $$PWD/textinputcontrol.h \
     $$PWD/videocontrol.h \
-    $$PWD/webcontrol.h \
-    $$PWD/wordscontrol.h
+    $$PWD/webcontrol.h
 
 SOURCES += \
     $$PWD/imagecontrol.cpp \
@@ -14,8 +13,7 @@ SOURCES += \
     $$PWD/textcontrol.cpp \
     $$PWD/textinputcontrol.cpp \
     $$PWD/videocontrol.cpp \
-    $$PWD/webcontrol.cpp \
-    $$PWD/wordscontrol.cpp
+    $$PWD/webcontrol.cpp
 
 win32 {
     HEADERS += \

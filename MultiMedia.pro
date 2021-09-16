@@ -3,6 +3,7 @@ QT += gui widgets webenginewidgets multimediawidgets quickwidgets
 win32 { QT += axcontainer }
 
 TEMPLATE = lib
+DEFINES += MULTIMEDIA_LIBRARY
 CONFIG += plugin
 
 CONFIG += c++14
@@ -24,7 +25,8 @@ SOURCES += \
     multimediaplugin.cpp
 
 HEADERS += \
-    multimediaplugin.h
+    multimediaplugin.h \
+    MultiMedia_global.h
 
 DISTFILES += MultiMedia.json
 

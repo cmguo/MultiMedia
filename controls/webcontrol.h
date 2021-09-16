@@ -1,12 +1,14 @@
 #ifndef WEBCONTROL_H
 #define WEBCONTROL_H
 
+#include "MultiMedia_global.h"
+
 #include <controls/widgetcontrol.h>
 
 #include <QColor>
 #include <QHash>
 
-class WebControl : public WidgetControl
+class MULTIMEDIA_EXPORT WebControl : public WidgetControl
 {
     Q_OBJECT
 

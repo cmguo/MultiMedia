@@ -1,0 +1,10 @@
+[requires]
+QtComposition/master@cmguo/stable
+QtEventBus/master@cmguo/stable
+qtpromise/v0.5.0@cmguo/stable
+QtAv/1.0@tal/stable
+
+[generators]
+qmake
+
+[options]

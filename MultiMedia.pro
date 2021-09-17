@@ -49,13 +49,6 @@ unix {
 }
 !isEmpty(target.path): INSTALLS += target
 
-win32:CONFIG(release, debug|release): LIBS += -L$$OUT_PWD/../ShowBoard/release/ -lShowBoard
-else:win32:CONFIG(debug, debug|release): LIBS += -L$$OUT_PWD/../ShowBoard/debug/ -lShowBoardd
-else:unix: LIBS += -L$$OUT_PWD/../ShowBoard/ -lShowBoard
-
-INCLUDEPATH += $$PWD/../ShowBoard
-DEPENDPATH += $$PWD/../ShowBoard
-
 win32:CONFIG(debug, debug|release): {
     LIBS += -lGdiplus
 }

@@ -15,9 +15,7 @@ class MULTIMEDIA_EXPORT WebControl : public WidgetControl
     Q_PROPERTY(bool fitToContent READ fitToContent WRITE setFitToContent)
     Q_PROPERTY(bool debugable READ debugable WRITE setDebugable)
     Q_PROPERTY(QColor background READ background WRITE setBackground)
-#ifdef Q_MOC_RUN // fix QCreator error
-    Q_PROPERTY(QHash<QString, QObject*> webBridges WRITE setWebBridges)
-#endif
+    Q_PROPERTY(QVariantMap webBridges WRITE setWebBridges)
 
 public:
     static constexpr Flag FitToContent = CustomFlag;
@@ -42,7 +40,7 @@ public:
 
     void setBackground(QColor const & color);
 
-    void setWebBridges(QHash<QString, QObject*> const& bridges);
+    void setWebBridges(QVariantMap const& bridges);
 
 public slots:
     void fitContent();

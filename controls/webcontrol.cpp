@@ -13,6 +13,7 @@
 
 #include <QWebChannel>
 #include <QMimeData>
+#include <qcomponentcontainer.h>
 
 #define LARGE_CANVAS_LINKAGE 1
 #ifdef QT_DEBUG
@@ -95,7 +96,7 @@ void WebControl::setBackground(const QColor &color)
     background_ = color;
 }
 
-void WebControl::setWebBridges(const QHash<QString, QObject*> &bridges)
+void WebControl::setWebBridges(const QVariantMap &bridges)
 {
     if (flags_ & RestorePersisted)
         return;
@@ -103,7 +104,27 @@ void WebControl::setWebBridges(const QHash<QString, QObject*> &bridges)
     QWebChannel * channel = view->page()->webChannel();
     if (channel == nullptr)
         channel = new QWebChannel(res_);
-    channel->registerObjects(bridges);
+    QHash<QString, QObject*> objects;
+    auto iter = bridges.begin();
+    for (; iter != bridges.end(); ++iter) {
+        QVariant value = iter.value();
+        QObject * object = value.value<QObject*>();
+        if (object == nullptr) {
+            QByteArray name = value.toByteArray();
+            if (name.startsWith('[') && name.endsWith(']')) {
+                QMetaObject const * meta = QMetaType::metaObjectForType(
+                        QMetaType::type(name.mid(1, name.length() - 2)));
+                if (meta)
+                    object = QComponentContainer::globalInstance().getExportValue(*meta);
+            } else {
+                object = QComponentContainer::globalInstance().getExportValue(name);
+            }
+        }
+        if (object) {
+            objects.insert(iter.key(), object);
+        }
+    }
+    channel->registerObjects(objects);
     view->page()->setWebChannel(channel);
 }
 

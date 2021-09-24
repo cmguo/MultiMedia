@@ -1,5 +1,9 @@
-HEADERS += \
-    $$PWD/webview.h
+!showboard_quick: {
 
-SOURCES += \
-    $$PWD/webview.cpp
+    HEADERS += \
+        $$PWD/webview.h
+
+    SOURCES += \
+        $$PWD/webview.cpp
+
+}

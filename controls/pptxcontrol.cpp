@@ -262,7 +262,10 @@ void PptxControl::sizeChanged()
 {
     if (!pixmap().isNull()) {
         QRectF rect = item_->boundingRect();
+#ifdef SHOWBOARD_QUICK
+#else
         stateItem()->setPos(rect.bottomRight() - QPointF(100, 100));
+#endif
     }
     Control::sizeChanged();
 }

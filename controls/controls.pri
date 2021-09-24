@@ -5,8 +5,7 @@ HEADERS += \
     $$PWD/strokecontrol.h \
     $$PWD/textcontrol.h \
     $$PWD/textinputcontrol.h \
-    $$PWD/videocontrol.h \
-    $$PWD/webcontrol.h
+    $$PWD/videocontrol.h
 
 SOURCES += \
     $$PWD/audiocontrol.cpp \
@@ -14,8 +13,7 @@ SOURCES += \
     $$PWD/strokecontrol.cpp \
     $$PWD/textcontrol.cpp \
     $$PWD/textinputcontrol.cpp \
-    $$PWD/videocontrol.cpp \
-    $$PWD/webcontrol.cpp
+    $$PWD/videocontrol.cpp
 
 win32 {
     HEADERS += \
@@ -26,3 +24,14 @@ win32 {
         $$PWD/docxcontrol.cpp \
         $$PWD/pptxcontrol.cpp
 }
+
+!showboard_quick: {
+
+    HEADERS += \
+        $$PWD/webcontrol.h
+
+    SOURCES += \
+        $$PWD/webcontrol.cpp
+
+}
+

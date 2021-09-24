@@ -5,7 +5,10 @@
 #include "imagecontrol.h"
 #include "videocontrol.h"
 #include "strokecontrol.h"
+#ifdef SHOWBOARD_QUICK
+#else
 #include "webcontrol.h"
+#endif
 #include "pptxcontrol.h"
 #include "docxcontrol.h"
 #include "textcontrol.h"
@@ -22,7 +25,10 @@ REGISTER_CONTROL(AudioControl, "audio,mp3,wma,wav,m4a,")
 #ifdef QT_DEBUG
 REGISTER_CONTROL(StrokeControl, "glstroke")
 #endif
+#ifdef SHOWBOARD_QUICK
+#else
 REGISTER_CONTROL(WebControl, "htm,html,http,https,chrome,swf")
+#endif
 REGISTER_CONTROL(TextControl, "text,txt,js,cpp,h,qss,css")
 REGISTER_CONTROL(TextInputControl, "textinput")
 
@@ -32,6 +38,5 @@ REGISTER_CONTROL(PptxControl, "ppt,pptx")
 REGISTER_CONTROL(DocxControl, "doc,docx")
 # endif
 #endif
-
 
 #endif // CONTROLS_H

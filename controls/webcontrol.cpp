@@ -185,6 +185,8 @@ void WebControl::attached()
         return;
     }
     if (background_ != Qt::transparent) {
+#ifdef SHOWBOARD_QUICK
+#else
         QGraphicsRectItem * background = new QGraphicsRectItem(item_);
         background->setPen(QPen(Qt::NoPen));
         background->setBrush(QBrush(background_));
@@ -192,8 +194,12 @@ void WebControl::attached()
         rect.moveCenter(item_->boundingRect().center());
         background->setRect(rect);
         background->setFlag(QGraphicsItem::ItemStacksBehindParent);
+#endif
     }
+#ifdef SHOWBOARD_QUICK
+#else
     item_->setFlag(QGraphicsItem::ItemIsFocusable);
+#endif
     if (res_->flags().testFlag(ResourceView::LargeCanvas)) {
         Control * canvasControl = Control::fromItem(whiteCanvas());
         connect(&canvasControl->resource()->transform(), &ResourceTransform::changed,

@@ -9,7 +9,7 @@
 #include <core/resourcepage.h>
 #include <core/toolbutton.h>
 #include <views/whitecanvas.h>
-#include <views/whitecanvaswidget.h>
+#include <widget/whitecanvaswidget.h>
 #include <showboard.h>
 #include <video/videocontroller.h>
 
@@ -164,7 +164,10 @@ void VideoControl::fullScreen(bool)
         widget->setAttribute(Qt::WA_NativeWindow);
         widget->windowHandle()->setSurfaceType(QSurface::RasterSurface);
         widget->setResourcePackage(new ResourcePackage(widget));
+#ifdef SHOWBOARD_QUICK
+#else
         widget->scene()->setBackgroundBrush(Qt::black);
+#endif
         fullScreenWidget_ = widget;
     }
     widget->show();

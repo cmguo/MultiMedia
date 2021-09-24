@@ -22,11 +22,14 @@ ImageControl::ImageControl(ResourceView * res, Flags flags, Flags clearFlags)
 void ImageControl::setBorderSize(qreal borderSize)
 {
     borderSize_ = borderSize;
+#ifdef SHOWBOARD_QUICK
+#else
     QGraphicsRectItem * item = static_cast<QGraphicsRectItem*>(item_);
     if (qFuzzyIsNull(borderSize_))
         item->setPen(Qt::NoPen);
     else
         item->setPen(QPen(Qt::gray, borderSize_));
+#endif
 }
 
 void ImageControl::setMipmap(qreal mipmap)
@@ -136,7 +139,6 @@ void ImageControl::setMipMapPixmap(const QPixmap &pixmap, QSizeF const & sizeHin
         qDebug() << "ImageControl initImageSize" << initImageSize_;
         qreal adjust = borderSize_ / 2;
         item->setRect(image_->boundingRect().adjusted(-adjust, -adjust, adjust, adjust));
-#endif
         loadFinished(true, property("finishIcon").toString());
         adjust /= res_->transform().zoom();
         QPen pen = item->pen();
@@ -145,6 +147,7 @@ void ImageControl::setMipMapPixmap(const QPixmap &pixmap, QSizeF const & sizeHin
         // ignore size change notify
         item->setRect(image_->boundingRect().adjusted(-adjust, -adjust, adjust, adjust));
         adjustMipmap();
+#endif
     } else {
         mipScale_ = initImageSize_.width() / size.width();
         image_->setTransform(QTransform::fromScale(mipScale_, mipScale_));

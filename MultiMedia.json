@@ -6,7 +6,8 @@
         "PptxControl/1.0",
         "WebControl/1.0",
         "ImageControl/1.0",
-        "TextControl/1.0"
+        "TextControl/1.0",
+        "TextInputControl/1.0"
     ],
     "Exports" : [{
         "meta": "Strokes/1.0",
@@ -43,6 +44,12 @@
         "type": "Control/1.0",
         "attrs": {
             "mineType": "text,txt,js,cpp,h,qss,css"
+        }
+    }, {
+        "meta": "TextInputControl/1.0",
+        "type": "Control/1.0",
+        "attrs": {
+            "mineType": "textinput"
         }
     }, {
         "meta": "VideoControl/1.0",

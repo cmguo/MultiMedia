@@ -8,12 +8,13 @@
 #include <QFont>
 #include <QObject>
 #include <QGraphicsPolygonItem>
+#include <QGraphicsSceneMouseEvent>
+#include <QMimeData>
+#include <QUrl>
+#include <QTextDocument>
 
 static char const * toolstr =
         "color|颜色|Popup,OptionsGroup,NeedUpdate|;"
-        #ifdef QT_DEBUG
-        "test()|测试|;"
-        #endif
         ;
 
 static ColorToolButtons colorButtons({Qt::white, Qt::black, Qt::red, Qt::green, Qt::blue, Qt::yellow});
@@ -22,41 +23,60 @@ REGISTER_OPTION_BUTTONS(TextInputControl, color, colorButtons)
 TextInputControl::TextInputControl(ResourceView *res, Control::Flags flags, Control::Flags clearFlags) :
     Control(res, flags, clearFlags)
 {
-
-    // text2:
 }
 
-QColor TextInputControl::getColor()
+QColor TextInputControl::color() const
 {
-    DiagramTextItem *item = qgraphicsitem_cast<DiagramTextItem *>(item_);
+    QGraphicsTextItem *item = qgraphicsitem_cast<QGraphicsTextItem *>(item_);
     return item->defaultTextColor();
 }
 
 void TextInputControl::setColor(QColor color)
 {
-    DiagramTextItem *item = qgraphicsitem_cast<DiagramTextItem *>(item_);
+    QGraphicsTextItem *item = qgraphicsitem_cast<QGraphicsTextItem *>(item_);
     item->setDefaultTextColor(color);
 }
 
-void TextInputControl::test()
+QString TextInputControl::content() const
 {
-
+    QGraphicsTextItem *item = qgraphicsitem_cast<QGraphicsTextItem *>(item_);
+    return item->toPlainText();
 }
 
-ControlView *TextInputControl::create(ControlView *parent)
+void TextInputControl::setContent(QString content)
+{
+    QGraphicsTextItem *item = qgraphicsitem_cast<QGraphicsTextItem *>(item_);
+    item->setPlainText(content);
+}
+
+class DiagramTextItem : public QGraphicsTextItem
+{
+public:
+    DiagramTextItem(QGraphicsItem *parent = nullptr);
+
+protected:
+    void focusOutEvent(QFocusEvent *event) override;
+    void mousePressEvent(QGraphicsSceneMouseEvent *event) override;
+};
+
+ControlView *TextInputControl::create(ControlView *)
 {
     DiagramTextItem* item = new DiagramTextItem;
+    connect(item->document(), &QTextDocument::contentsChanged, this, &TextInputControl::sizeChanged);
     return item;
 }
 
 void TextInputControl::attached()
 {
+    if (content().isEmpty())
+        setContent(res_->url().path());
     loadFinished(true);
 }
 
 void TextInputControl::copy(QMimeData &data)
 {
-
+    Control::copy(data);
+    data.setText(content());
 }
 
 QString TextInputControl::toolsString(const QByteArray &parent) const
@@ -71,42 +91,23 @@ QString TextInputControl::toolsString(const QByteArray &parent) const
 DiagramTextItem::DiagramTextItem(QGraphicsItem *parent)
     : QGraphicsTextItem(parent)
 {
-//    setFlag(QGraphicsItem::ItemIsMovable);
-//    setFlag(QGraphicsItem::ItemIsSelectable);
-    setFlag(QGraphicsItem::ItemIsFocusable);
     setFlag(QGraphicsItem::ItemAcceptsInputMethod);
-    setPlainText("QGraphicsTextItem Engine 中文 123");
     setFont(QFont("微软雅黑",12));
     setDefaultTextColor(Qt::white);
-
 }
-
-QVariant DiagramTextItem::itemChange(GraphicsItemChange change,
-                     const QVariant &value)
-{
-    if (change == QGraphicsItem::ItemSelectedHasChanged)
-        emit selectedChange(this);
-    return value;
-}
-
 
 void DiagramTextItem::focusOutEvent(QFocusEvent *event)
 {
     setTextInteractionFlags(Qt::NoTextInteraction);
-    emit lostFocus(this);
     QGraphicsTextItem::focusOutEvent(event);
 }
 
-void DiagramTextItem::focusInEvent(QFocusEvent *event)
+void DiagramTextItem::mousePressEvent(QGraphicsSceneMouseEvent *event)
 {
-    if (textInteractionFlags() == Qt::NoTextInteraction)
+    TextInputControl * control = qobject_cast<TextInputControl*>(Control::fromItem(this));
+    if (control->flags().testFlag(Control::Selected)) {
         setTextInteractionFlags(Qt::TextEditorInteraction);
-    QGraphicsTextItem::focusInEvent(event);
-}
-
-void DiagramTextItem::mouseDoubleClickEvent(QGraphicsSceneMouseEvent *event)
-{
-    if (textInteractionFlags() == Qt::NoTextInteraction)
-        setTextInteractionFlags(Qt::TextEditorInteraction);
-    QGraphicsTextItem::mouseDoubleClickEvent(event);
+        setFocus();
+    }
+    QGraphicsTextItem::mousePressEvent(event);
 }

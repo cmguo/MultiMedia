@@ -1,4 +1,5 @@
 HEADERS += \
+    $$PWD/exports.h \
     $$PWD/mediaplayer.h \
     $$PWD/mediaplayerbridge.h \
     $$PWD/qtmediaplayer.h \

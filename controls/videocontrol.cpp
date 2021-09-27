@@ -44,7 +44,7 @@ VideoControl::VideoControl(ResourceView * res)
 #else
     (void) toolstr;
 #endif
-    //playerBridge_ = new AVMediaPlayerBridge(this);
+    playerBridge_ = MediaPlayerBridge::get(res_->property("playerimpl").toByteArray());
 }
 
 VideoControl::~VideoControl()

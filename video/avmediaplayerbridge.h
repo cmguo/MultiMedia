@@ -5,6 +5,7 @@
 
 class AVMediaPlayerBridge : public MediaPlayerBridge
 {
+    Q_OBJECT
 public:
     Q_INVOKABLE AVMediaPlayerBridge(QObject *parent = nullptr);
 

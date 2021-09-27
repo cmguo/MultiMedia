@@ -13,6 +13,9 @@ public:
     virtual QObject * createPlayer() = 0;
 
     virtual QWidget * createSurface() = 0;
+
+public:
+    static MediaPlayerBridge * get(QByteArray const & type);
 };
 
 #endif // MEDIAPLAYERBRIDGE_H

@@ -7,6 +7,8 @@
         "WebControl/1.0",
         "ImageControl/1.0",
         "TextControl/1.0",
+        "QtMediaPlayerBridge",
+        "AVMediaPlayerBridge",
         "TextInputControl/1.0"
     ],
     "Exports" : [{
@@ -51,6 +53,18 @@
         "attrs": {
             "mineType": "textinput"
         }
+    }, {
+        "meta": "QtMediaPlayerBridge",
+        "type": "MediaPlayerBridge",
+        "attrs": {
+            "mineType": ",qtplayer"
+        }
+        }, {
+            "meta": "AVMediaPlayerBridge",
+            "type": "MediaPlayerBridge",
+            "attrs": {
+                "mineType": "avplayer"
+            }
     }, {
         "meta": "VideoControl/1.0",
         "type": "Control/1.0",

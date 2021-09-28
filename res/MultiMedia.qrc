@@ -1,0 +1,22 @@
+﻿<RCC>
+    <qresource prefix="/multimedia">
+        <file>qml/BarSlider.qml</file>
+        <file>qml/RoundProgress.qml</file>
+        <file>image/audio_play_btn_bg.png</file>
+        <file>image/ic_audio_off.svg</file>
+        <file>image/ic_audio_on.svg</file>
+        <file>image/ic_audio_fold.svg</file>
+        <file>image/ic_audio_close.svg</file>
+        <file>image/ic_audio_arrow_down.png</file>
+        <file>qml/AudioPlayerBar.qml</file>
+        <file>qml/VideoPlayerBar.qml</file>
+        <file>image/exit_fullscreen.png</file>
+        <file>image/fullscreen.png</file>
+        <file>qml/VolumeBar.qml</file>
+        <file>image/feedback.png</file>
+        <file>image/ic_media_loading.png</file>
+        <file>image/ic_media_pause.png</file>
+        <file>image/ic_media_play.png</file>
+        <file>qml/SeekBar.qml</file>
+    </qresource>
+</RCC>

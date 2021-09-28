@@ -1,4 +1,5 @@
 HEADERS += \
+    $$PWD/audiocontrol.h \
     $$PWD/controls.h \
     $$PWD/imagecontrol.h \
     $$PWD/strokecontrol.h \
@@ -8,6 +9,7 @@ HEADERS += \
     $$PWD/webcontrol.h
 
 SOURCES += \
+    $$PWD/audiocontrol.cpp \
     $$PWD/imagecontrol.cpp \
     $$PWD/strokecontrol.cpp \
     $$PWD/textcontrol.cpp \

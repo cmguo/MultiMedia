@@ -31,6 +31,9 @@ HEADERS += \
     multimediaplugin.h \
     MultiMedia_global.h
 
+RESOURCES += \
+    $$PWD/res/MultiMedia.qrc
+
 DISTFILES += MultiMedia.json
 
 include(resources/resources.pri)
@@ -38,6 +41,7 @@ include(controls/controls.pri)
 include(opengl/opengl.pri)
 include(web/web.pri)
 include(video/video.pri)
+include(audio/audio.pri)
 
 win32 {
     include(office/office.pri)

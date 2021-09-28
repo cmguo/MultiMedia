@@ -1,9 +1,7 @@
 import QtQuick 2.12
 import QtQuick.Controls 2.12
-import TalDisplay 1.0
+import ShowBoard 1.0
 import MediaPlayer 1.0
-import "qrc:/uibase/qml/talwidget"
-import "qrc:/uibase/qml/talwidget/styles"
 
 Item {
     property int animationDuration: 300
@@ -20,25 +18,33 @@ Item {
 
     id: rootBar
 
-    TalMouseArea {
+    MouseArea {
         width: parent.width
         height: parent.height-controlBar.height
         onClicked: togglePlayAndPaused()
         onDoubleClicked: togglePlayAndPaused()
     }
-    TalMouseArea {
+    MouseArea {
         anchors.bottom: parent.bottom
         height: controlBar.height
         width: parent.width
+
+        Timer {
+            id: handler
+            interval: 3000
+            repeat: false
+            onTriggered: {
+                if (volumeBar.opened) return
+                if(player.playState === MediaPlayer.PlayingState)
+                    controlBar.visible = false;
+            }
+        }
+
         onClicked: {
             if(player.playState !== MediaPlayer.PlayingState)
                 return;
             controlBar.visible = true;
-            handler.delay(3000,function() {
-                if (volumeBar.opened) return
-                if(player.playState === MediaPlayer.PlayingState)
-                    controlBar.visible = false;
-            })
+            handler.start();
         }
         hoverEnabled: true
         onEntered:  {
@@ -50,20 +56,10 @@ Item {
         onExited: {
             if(player.playState !== MediaPlayer.PlayingState)
                 return;
-            handler.delay(3000,function() {
-                if (volumeBar.opened) return
-                if(player.playState === MediaPlayer.PlayingState)
-                    controlBar.visible = false;
-            })
+            handler.start()
         }
     }
-    TalHandler {
-        id: handler
-    }
 
-    TalHandler {
-        id: resetStartPositionHandler
-    }
     Rectangle{
         height: Destiny.dp(128)
         width:Destiny.dp(128)
@@ -80,11 +76,11 @@ Item {
             opacity: centeStateBtnArea.state === centeStateBtnArea.stateHovered
                      ? 0.8 : (centeStateBtnArea.state === centeStateBtnArea.statePressed ? 0.5 : 1)
             source: player.playState === MediaPlayer.LoadingState
-                    ? "qrc:/resource/image/ic_media_loading.png":player.playState === MediaPlayer.PlayingState
-                      ? "qrc:/resource/image/ic_media_pause.png"
-                      : "qrc:/resource/image/ic_media_play.png"
+                    ? "qrc:/multimedia/image/ic_media_loading.png":player.playState === MediaPlayer.PlayingState
+                      ? "qrc:/multimedia/image/ic_media_pause.png"
+                      : "qrc:/multimedia/image/ic_media_play.png"
 
-            TalMouseArea {
+            MouseArea {
                 id: centeStateBtnArea
                 anchors.fill: parent
                 onClicked: togglePlayAndPaused()
@@ -117,13 +113,19 @@ Item {
         anchors.bottom: parent.bottom
         anchors.horizontalCenter: parent.horizontalCenter
         anchors.bottomMargin: control.fullScreen?Destiny.dp(16):0
+        Timer {
+            id: resetStartPositionHandler
+            interval: 1000
+            repeat: false
+            onTriggered: {
+                player.startPosition = 0;
+           }
+        }
         Connections {
             target: player
-            onPlayStateChanged:{
+            onPlayStateChanged: {
                 if(player.playState === MediaPlayer.PlayingState)
-                    resetStartPositionHandler.delay(1000,function(){
-                         player.startPosition = 0;
-                    });
+                    resetStartPositionHandler.start()
                 controlBarAutoHide();
             }
         }
@@ -150,11 +152,11 @@ Item {
                 opacity: playerBtnMouseArea.state === playerBtnMouseArea.stateHovered
                          ? 0.8 : (playerBtnMouseArea.state === playerBtnMouseArea.statePressed ? 0.5 : 1)
                 source: player.playState === MediaPlayer.LoadingState
-                        ? "qrc:/resource/image/ic_media_loading.png":player.playState === MediaPlayer.PlayingState
-                          ? "qrc:/resource/image/ic_media_pause.png"
-                          : "qrc:/resource/image/ic_media_play.png"
+                        ? "qrc:/multimedia/image/ic_media_loading.png":player.playState === MediaPlayer.PlayingState
+                          ? "qrc:/multimedia/image/ic_media_pause.png"
+                          : "qrc:/multimedia/image/ic_media_play.png"
 
-                TalMouseArea {
+                MouseArea {
                     id: playerBtnMouseArea
                     anchors.fill: parent
                     onClicked:togglePlayAndPaused();
@@ -175,21 +177,23 @@ Item {
                         playerBtnImg.rotation = 0;
             }
 
-            TalText {
+            Text {
                 id: currentTimeText
                 width: implicitWidth
                 height: parent.height
                 verticalAlignment: Text.AlignVCenter
-
-                talStyle: TalTextStyleWhite {
-                    size: TalTextStyle.Size.AssistSecondary
+                font {
+                    family: "Microsoft YaHei"
+                    pixelSize: Destiny.dp(12)
                 }
+                color: "#FFFFFF"
+
                 text: formatTime(player.position)
             }
 
         }
 
-        TalSeekBar {
+        SeekBar {
             id: seekSlider
             objectName: "seekSlider"
             width: parent.width - leftRegion.width -rightRegion.width
@@ -217,49 +221,14 @@ Item {
                 fillMode: Image.PreserveAspectFit
                 anchors.verticalCenter: parent.verticalCenter
                 opacity: fullScreenBtnMouseArea.state === fullScreenBtnMouseArea.stateHovered ? 0.8 : (fullScreenBtnMouseArea.state === fullScreenBtnMouseArea.statePressed ? 0.5 : 1)
-                source: control.fullScreen ? "qrc:/resource/image/exit_fullscreen.png" : "qrc:/resource/image/fullscreen.png"
-                TalMouseArea {
+                source: control.fullScreen ? "qrc:/multimedia/image/exit_fullscreen.png" : "qrc:/multimedia/image/fullscreen.png"
+                MouseArea {
                     id: fullScreenBtnMouseArea
                     anchors.fill: parent
                     onClicked: {
                         control.fullScreen = !control.fullScreen;
                     }
                 }
-            }
-            Item {
-                id: feedbackBtn
-                objectName: "feedbackBtn"
-                height: parent.height
-                width: Destiny.dp(60)
-                visible: quickWidgetParent.enableFeedBack
-                opacity: feedbackBtnArea.state === feedbackBtnArea.stateHovered ? 0.8 : (feedbackBtnArea.state === feedbackBtnArea.statePressed ? 0.5 : 1)
-                Image {
-                    anchors.left: parent.left
-                    height: Destiny.dp(32)
-                    fillMode: Image.PreserveAspectFit
-                    anchors.verticalCenter: parent.verticalCenter
-                    source: "qrc:/resource/image/feedback.png"
-                }
-                TalText {
-                    width: implicitWidth
-                    height: parent.height
-                    anchors.right: parent.right
-                    verticalAlignment: Text.AlignVCenter
-
-                    talStyle: TalTextStyleWhite {
-                        size: TalTextStyle.Size.AssistSecondary
-                    }
-                    text:"反馈"
-                }
-                TalMouseArea {
-                    id: feedbackBtnArea
-                    anchors.fill: parent
-                    onClicked: {
-                        var locationToRoot = mapToItem(rootBar, feedbackBtn.width / 2, feedbackBtn.height / 2)
-                        quickWidgetParent.feedback(locationToRoot);
-                    }
-                }
-
             }
 
             Image {
@@ -268,8 +237,8 @@ Item {
                 fillMode: Image.PreserveAspectFit
                 anchors.verticalCenter: parent.verticalCenter
                 opacity: volumeBtnMouseArea.state === volumeBtnMouseArea.stateHovered ? 0.8 : (volumeBtnMouseArea.state === volumeBtnMouseArea.statePressed ? 0.5 : 1)
-                source: player.volume < 0.01 ? "qrc:/resource/image/ic_audio_off.svg" : "qrc:/resource/image/ic_audio_on.svg"
-                TalMouseArea {
+                source: player.volume < 0.01 ? "qrc:/multimedia/image/ic_audio_off.svg" : "qrc:/multimedia/image/ic_audio_on.svg"
+                MouseArea {
                     id: volumeBtnMouseArea
                     anchors.fill: parent
                     onClicked: {
@@ -278,15 +247,17 @@ Item {
                 }
             }
 
-            TalText {
+            Text {
                 id: totalTimeText
                 width: implicitWidth
                 height: parent.height
                 verticalAlignment: Text.AlignVCenter
-
-                talStyle: TalTextStyleWhite {
-                    size: TalTextStyle.Size.AssistSecondary
+                font {
+                    family: "Microsoft YaHei"
+                    pixelSize: Destiny.dp(12)
                 }
+                color: "#FFFFFF"
+
                 text: formatTime(player.duration)
             }
         }
@@ -318,13 +289,15 @@ Item {
                 color: "#2B3034"
                 radius: Destiny.dp(4)
                 anchors.top: contentRect.top
-                TalText {
+                Text {
                     width: parent.width
                     height: Destiny.dp(40)
-                    talStyle: TalTextStyleWhite {
-                        size: TalTextStyle.Size.AssistPrimary
-                        level: TalTextStyle.ColorLevel.L80
+                    font {
+                        family: "Microsoft YaHei"
+                        pixelSize: Destiny.dp(14)
                     }
+                    color: "#FFFFFF"
+                    opacity: 0.8
                     verticalAlignment: Text.AlignVCenter
                     horizontalAlignment: Text.AlignHCenter
                     text: "音量"
@@ -372,7 +345,7 @@ Item {
                 anchors.horizontalCenter: contentRect.horizontalCenter
                 anchors.bottom: contentRect.bottom
                 anchors.bottomMargin: Destiny.dp(1)
-                source: "qrc:/resource/image/ic_audio_arrow_down.png"
+                source: "qrc:/multimedia/image/ic_audio_arrow_down.png"
             }
         }
     }
@@ -407,14 +380,8 @@ Item {
         if (volumeBar.opened) return
 
         if(player.playState === MediaPlayer.PlayingState)
-            handler.delay(3000,function() {
-                if(player.playState === MediaPlayer.PlayingState)
-                    controlBar.visible = false;
-            })
+            handler.start()
         else
-            handler.delay(0,function() {
-                if(player.playState !== MediaPlayer.LoadingState)
-                    controlBar.visible = true;
-            });
+            handler.start()
     }
 }

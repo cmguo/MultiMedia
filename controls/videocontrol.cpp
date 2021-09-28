@@ -11,8 +11,9 @@
 #include <views/whitecanvas.h>
 #include <views/whitecanvaswidget.h>
 #include <showboard.h>
+#include <video/videocontroller.h>
 
-#include <qcomponentcontainer.h>
+#include <qcomponentfactory.h>
 
 #include <QMediaService>
 #include <QWindow>
@@ -87,13 +88,9 @@ void VideoControl::setController(const QVariant &c)
     controller_ = nullptr;
     if (auto ct = c.value<QWidget*>()) {
         controller_ = ct;
-        controller_->setParent(widget_);
     } else {
-        auto ct2 = qobject_cast<QWidget*>(
-                    ShowBoard::containter().getExportValue(c.toByteArray()));
-        controller_ = ct2;
-        controller_->setParent(widget_);
-        bindTouchEventToChild(controller_);
+        static QComponentFactory<VideoController> factory(ShowBoard::containter());
+        controller_ = factory.get(c.toByteArray());
     }
 }
 
@@ -113,9 +110,6 @@ void VideoControl::attached()
         player_->setParent(this);
     }
     player_->setProperty("surface", QVariant::fromValue(widget_));
-    if (controller_ == nullptr) {
-        setController("VideoController");
-    }
     if (!isFullScreen()) {
         player_->setProperty("position",
                              res_->property("position"));
@@ -129,6 +123,10 @@ void VideoControl::attached()
             player_->setProperty("playState", MediaPlayer::State::PlayingState);
             player_->setProperty("playState", MediaPlayer::State::PausedState);
         }
+    }
+    if (controller_) {
+        controller_->setParent(widget_);
+        bindTouchEventToChild(controller_);
     }
 }
 
@@ -172,6 +170,8 @@ void VideoControl::fullScreen(bool)
     widget->show();
 
     widget->package()->newPage(QUrl("video:full"), {
+                                   {"playerimpl", res_->property("playerimpl")},
+                                   {"controller", res_->property("controller")},
                                    {"deletable", false},
                                    {"pageMode", ResourceView::Independent},
                                    {"scaleMode", FullLayout},

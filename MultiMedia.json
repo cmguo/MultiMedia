@@ -11,6 +11,7 @@
         "VideoControl/1.0",
         "QtMediaPlayerBridge",
         "AVMediaPlayerBridge",
+        "VideoController",
         "TextInputControl/1.0"
     ],
     "Exports" : [{
@@ -58,15 +59,24 @@
     }, {
         "meta": "QtMediaPlayerBridge",
         "type": "MediaPlayerBridge",
+        "share": "shared",
         "attrs": {
             "mineType": ",qtplayer"
         }
-        }, {
-            "meta": "AVMediaPlayerBridge",
-            "type": "MediaPlayerBridge",
-            "attrs": {
-                "mineType": "avplayer"
-            }
+    }, {
+        "meta": "AVMediaPlayerBridge",
+        "type": "MediaPlayerBridge",
+        "share": "shared",
+        "attrs": {
+            "mineType": "avplayer"
+        }
+    }, {
+        "meta": "VideoController",
+        "type": "VideoController",
+        "share": "nonshared",
+        "attrs": {
+            "mineType": ",default"
+        }
     }, {
         "meta": "VideoControl/1.0",
         "type": "Control/1.0",

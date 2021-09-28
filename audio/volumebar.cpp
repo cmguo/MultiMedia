@@ -12,7 +12,6 @@ VolumeBar::VolumeBar(QWidget *parent)
     setClearColor(QColor(Qt::transparent));
     rootContext()->setContextProperty("quickWidgetParent", this);
     setSource(QUrl("qrc:/multimedia/qml/VolumeBar.qml"));
-    this->installEventFilter(this);
 }
 
 double VolumeBar::volume() const

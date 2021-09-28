@@ -3,12 +3,10 @@
 #include "mediaplayer.h"
 
 #include <QtAVWidgets/WidgetRenderer.h>
-#include <QtQml>
 
 AVMediaPlayerBridge::AVMediaPlayerBridge(QObject *parent)
     : MediaPlayerBridge(parent)
 {
-    qmlRegisterType<MediaPlayer>("MediaPlayer", 1, 0, "MediaPlayer");
 }
 
 QObject *AVMediaPlayerBridge::createPlayer()

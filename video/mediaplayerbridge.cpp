@@ -1,4 +1,5 @@
-﻿#include "mediaplayerbridge.h"
+﻿#include "mediaplayer.h"
+#include "mediaplayerbridge.h"
 
 #include <qlazy.h>
 #include <qcomponentcontainer.h>
@@ -10,6 +11,7 @@
 MediaPlayerBridge::MediaPlayerBridge(QObject *parent)
     : QObject(parent)
 {
+    qmlRegisterType<MediaPlayer>("MediaPlayer", 1, 0, "MediaPlayer");
 }
 
 MediaPlayerBridge *MediaPlayerBridge::get(const QByteArray & type)

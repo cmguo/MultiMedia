@@ -2,7 +2,7 @@
 #define MEDIAPLAYERBRIDGE_H
 
 #include <QObject>
-
+#include <QtQml>
 
 class MediaPlayerBridge : public QObject
 {

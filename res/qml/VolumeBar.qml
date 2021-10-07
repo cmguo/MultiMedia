@@ -78,6 +78,6 @@ Item {
         anchors.horizontalCenter: parent.horizontalCenter
         anchors.bottom: parent.bottom
         anchors.bottomMargin: Destiny.dp(1)
-        source: "qrc:/resource/image/ic_audio_arrow_down.png"
+        source: "qrc:/multimedia/image/ic_audio_arrow_down.png"
     }
 }

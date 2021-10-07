@@ -73,7 +73,7 @@ Rectangle {
             Image {
                 id: playerBgImg
                 anchors.fill: parent
-                source: "qrc:/resource/image/audio_play_btn_bg.png"
+                source: "qrc:/multimedia/image/audio_play_btn_bg.png"
             }
 
             Image {
@@ -83,7 +83,7 @@ Rectangle {
                 anchors.centerIn: parent
                 visible: !showLoading
                 opacity: playerBtnMouseArea.state === playerBtnMouseArea.stateHovered ? 0.8 : (playerBtnMouseArea.state === playerBtnMouseArea.statePressed ? 0.5 : 1)
-                source: isPlaying ? "qrc:/resource/image/ic_media_pause.png" : "qrc:/resource/image/ic_media_play.png"
+                source: isPlaying ? "qrc:/multimedia/image/ic_media_pause.png" : "qrc:/multimedia/image/ic_media_play.png"
             }
 
             Image {
@@ -92,7 +92,7 @@ Rectangle {
                 height: Destiny.dp(40)
                 anchors.centerIn: parent
                 opacity: playerBtnMouseArea.state === playerBtnMouseArea.stateHovered ? 0.8 : (playerBtnMouseArea.state === playerBtnMouseArea.statePressed ? 0.5 : 1)
-                source: "qrc:/resource/image/ic_media_loading.png"
+                source: "qrc:/multimedia/image/ic_media_loading.png"
                 visible: showLoading
             }
 
@@ -303,7 +303,7 @@ Rectangle {
                     height: Destiny.dp(32)
                     anchors.centerIn: parent
                     opacity: volumeBtnMouseArea.state === volumeBtnMouseArea.stateHovered ? 0.8 : (volumeBtnMouseArea.state === volumeBtnMouseArea.statePressed ? 0.5 : 1)
-                    source: volumeBar.volume < 0.01 ? "qrc:/resource/image/ic_audio_off.svg" : "qrc:/resource/image/ic_audio_on.svg"
+                    source: volumeBar.volume < 0.01 ? "qrc:/multimedia/image/ic_audio_off.svg" : "qrc:/multimedia/image/ic_audio_on.svg"
                 }
 
                 MouseArea {
@@ -334,7 +334,7 @@ Rectangle {
                     height: Destiny.dp(32)
                     anchors.centerIn: parent
                     opacity: closeBtnMouseArea.state === closeBtnMouseArea.stateHovered ? 0.8 : (closeBtnMouseArea.state === closeBtnMouseArea.statePressed ? 0.5 : 1)
-                    source: "qrc:/resource/image/ic_audio_close.svg"
+                    source: "qrc:/multimedia/image/ic_audio_close.svg"
                 }
 
                 MouseArea {
@@ -373,7 +373,7 @@ Rectangle {
                 height: Destiny.dp(20)
                 anchors.centerIn: parent
                 opacity: folderBtnMouseArea.state === folderBtnMouseArea.stateHovered ? 0.8 : (folderBtnMouseArea.state === folderBtnMouseArea.statePressed ? 0.5 : 1)
-                source: "qrc:/resource/image/ic_audio_fold.svg"
+                source: "qrc:/multimedia/image/ic_audio_fold.svg"
                 rotation: isFold ? 180 : 0
 
                 Behavior on rotation {

@@ -14,6 +14,7 @@
 #include "textcontrol.h"
 #include "audiocontrol.h"
 #include "textinputcontrol.h"
+#include "graphvizcontrol.h"
 
 #include <qexport.h>
 
@@ -31,6 +32,7 @@ REGISTER_CONTROL(WebControl, "htm,html,http,https,chrome,swf")
 #endif
 REGISTER_CONTROL(TextControl, "text,txt,js,cpp,h,qss,css")
 REGISTER_CONTROL(TextInputControl, "textinput")
+REGISTER_CONTROL(GraphvizControl, "graphviz,dot")
 
 #ifdef WIN32
 REGISTER_CONTROL(PptxControl, "ppt,pptx")

@@ -12,7 +12,8 @@
         "QtMediaPlayerBridge",
         "AVMediaPlayerBridge",
         "VideoController",
-        "TextInputControl/1.0"
+        "TextInputControl/1.0",
+        "GraphvizControl/1.0"
     ],
     "Exports" : [{
         "meta": "Strokes/1.0",
@@ -88,6 +89,12 @@
         "type": "Control/1.0",
         "attrs": {
             "mineType": "audio,mp3,wma,wav,m4a"
+        }
+    }, {
+        "meta": "GraphvizControl/1.0",
+        "type": "Control/1.0",
+        "attrs": {
+            "mineType": "graphviz,dot"
         }
     }]
 }

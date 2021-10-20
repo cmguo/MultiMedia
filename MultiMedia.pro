@@ -42,6 +42,7 @@ include(opengl/opengl.pri)
 include(web/web.pri)
 include(video/video.pri)
 include(audio/audio.pri)
+include(graphviz/graphviz.pri)
 
 win32 {
     include(office/office.pri)
@@ -55,5 +56,13 @@ unix {
 
 win32:CONFIG(debug, debug|release): {
     LIBS += -lGdiplus
+}
+
+exists("D:/Program Files/Graphviz/include") {
+
+    DEFINES += HAS_GRAPHVIZ
+    win32: LIBS += -L"D:/Program Files/Graphviz/lib" -lgvc -lcdt -lcgraph \
+        -lgvplugin_core -lgvplugin_dot_layout -lgvplugin_gdiplus -lgvplugin_neato_layout -lgvplugin_pango
+    INCLUDEPATH += "D:/Program Files/Graphviz/include"
 }
 

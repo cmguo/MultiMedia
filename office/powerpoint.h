@@ -114,7 +114,7 @@ private:
     int thumbNumber_;
     QAxObject * view_;
     QSize size_;
-    intptr_t hwnd_;
+    WId hwnd_;
     int timerId_;
 };
 

@@ -10,17 +10,17 @@
 
 #include <objbase.h>
 
-extern intptr_t findWindow(char const * titleParts[]);
-extern bool isWindowValid(intptr_t hwnd);
-extern bool isWindowShown(intptr_t hwnd);
-extern void showWindow(intptr_t hwnd);
-extern void hideWindow(intptr_t hwnd);
-extern void setWindowAtTop(intptr_t hwnd);
-extern void attachWindow(intptr_t hwndParent, intptr_t hwnd, int left, int top);
-extern void moveChildWindow(intptr_t hwndParent, intptr_t hwnd, int dx, int dy);
+extern WId findWindow(char const * titleParts[]);
+extern bool isWindowValid(WId hwnd);
+extern bool isWindowShown(WId hwnd);
+extern void showWindow(WId hwnd);
+extern void hideWindow(WId hwnd);
+extern void setWindowAtTop(WId hwnd);
+extern void attachWindow(WId hwndParent, WId hwnd, int left, int top);
+extern void moveChildWindow(WId hwndParent, WId hwnd, int dx, int dy);
 extern void setArrowCursor();
 extern void showCursor();
-int captureImage(intptr_t hwnd, char ** out, int * nout);
+int captureImage(WId hwnd, char ** out, int * nout);
 
 QAxObject * PowerPoint::application_ = nullptr;
 

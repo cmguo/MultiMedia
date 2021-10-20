@@ -30,43 +30,43 @@ BOOL CALLBACK EnumWindowsProc(_In_ HWND hwnd, _In_ LPARAM lParam)
     return FALSE;
 }
 
-intptr_t findWindow(char const * titleParts[])
+uintptr_t findWindow(char const * titleParts[])
 {
     HWND hWnd = nullptr;
     char const ** temp = titleParts;
     ::EnumWindows(EnumWindowsProc, reinterpret_cast<LPARAM>(&temp));
     if (temp != titleParts)
         hWnd = reinterpret_cast<HWND>(temp);
-    return reinterpret_cast<intptr_t>(hWnd);
+    return reinterpret_cast<uintptr_t>(hWnd);
 }
 
-bool isWindowValid(intptr_t hwnd)
+bool isWindowValid(uintptr_t hwnd)
 {
     HWND hWnd = reinterpret_cast<HWND>(hwnd);
     return ::IsWindow(hWnd);
 }
 
-bool isWindowShown(intptr_t hwnd)
+bool isWindowShown(uintptr_t hwnd)
 {
     HWND hWnd = reinterpret_cast<HWND>(hwnd);
     return ::IsWindow(hWnd) && (::GetWindowLongA(hWnd, GWL_STYLE) & WS_VISIBLE);
 }
 
-void showWindow(intptr_t hwnd)
+void showWindow(uintptr_t hwnd)
 {
     HWND hWnd = reinterpret_cast<HWND>(hwnd);
     ::SetWindowPos(hWnd, HWND_TOP, 0, 0, 0, 0,
                    SWP_NOZORDER | SWP_NOMOVE | SWP_NOSIZE | SWP_SHOWWINDOW);
 }
 
-void hideWindow(intptr_t hwnd)
+void hideWindow(uintptr_t hwnd)
 {
     HWND hWnd = reinterpret_cast<HWND>(hwnd);
     ::SetWindowPos(hWnd, HWND_TOP, 0, 0, 0, 0,
                    SWP_NOZORDER | SWP_NOMOVE | SWP_NOSIZE | SWP_HIDEWINDOW);
 }
 
-void setWindowAtTop(intptr_t hwnd)
+void setWindowAtTop(uintptr_t hwnd)
 {
     HWND hWnd = reinterpret_cast<HWND>(hwnd);
     ::SetWindowPos(hWnd, HWND_TOP, 0, 0, 0, 0, SWP_NOMOVE | SWP_NOSIZE);
@@ -78,7 +78,7 @@ void closeWindow(intptr_t hwnd)
     ::CloseWindow(hWnd);
 }
 
-void attachWindow(intptr_t hwnd, intptr_t hwndParent, int left, int top)
+void attachWindow(uintptr_t hwnd, uintptr_t hwndParent, int left, int top)
 {
     HWND hWndParent = reinterpret_cast<HWND>(hwndParent);
     HWND hWnd = reinterpret_cast<HWND>(hwnd);
@@ -104,7 +104,7 @@ void attachWindow(intptr_t hwnd, intptr_t hwndParent, int left, int top)
     ::SetFocus(hWndParent);
 }
 
-void moveChildWindow(intptr_t hwndParent, intptr_t hwnd, int dx, int dy)
+void moveChildWindow(uintptr_t hwndParent, uintptr_t hwnd, int dx, int dy)
 {
     HWND hWndParent = reinterpret_cast<HWND>(hwndParent);
     HWND hWnd = reinterpret_cast<HWND>(hwnd);
@@ -128,7 +128,7 @@ void showCursor()
     ::ShowCursor(true);
 }
 
-int captureImage(intptr_t hwnd, char ** out, int * nout)
+int captureImage(uintptr_t hwnd, char ** out, int * nout)
 {
     HWND hWnd = reinterpret_cast<HWND>(hwnd);
     HDC hdcWindow;

@@ -8,7 +8,7 @@
 #include <QColor>
 #include <QHash>
 
-class WebControl : public WidgetControl
+class MULTIMEDIA_EXPORT WebControl : public WidgetControl
 {
     Q_OBJECT
 

@@ -1,9 +1,9 @@
-﻿#include "audioplayerbar.h"
+#include "audioplayerbar.h"
 
 #include <QQmlContext>
 #include <QQuickItem>
 
-#include <views/qsshelper.h>
+#include <widget/qsshelper.h>
 
 AudioPlayerBar::AudioPlayerBar(QWidget *parent)
     : QQuickWidget(parent),

@@ -223,7 +223,8 @@ void PptxControl::prev()
 void PptxControl::hide()
 {
     PowerPoint * p = powerpoint_;
-    stopButton_->hide();
+    if (stopButton_)
+        stopButton_->hide();
     WorkThread::postWork(p, [p]() {
         p->hide();
     });

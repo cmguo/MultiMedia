@@ -181,7 +181,7 @@ void PowerPoint::thumb(int page)
             }
             emit thumbed(pixmap);
             thumbNumber_ = slideNumber_;
-        } else {
+        } else if (view_) {
             slide = view_->querySubObject("Slide");
         }
     } else {

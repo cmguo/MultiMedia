@@ -3,6 +3,8 @@
 
 #include "core/control.h"
 #include "imagecontrol.h"
+#include "vectorcontrol.h"
+#include "animatedcontrol.h"
 #include "videocontrol.h"
 #include "strokecontrol.h"
 #ifdef SHOWBOARD_QUICK
@@ -18,7 +20,9 @@
 
 #include <qexport.h>
 
-REGISTER_CONTROL(ImageControl, "image,bmp,gif,jpg,jpeg,png,svg")
+REGISTER_CONTROL(ImageControl, "image,bmp,jpg,jpeg,png")
+REGISTER_CONTROL(VectorControl, "vector,svg")
+REGISTER_CONTROL(AnimatedControl, "animated,gif")
 
 REGISTER_CONTROL(VideoControl, "video,mp4,wmv,webm,ts,flv,m3u8,asf,avi,"
                                 "rtsp,rtmp,rtp")

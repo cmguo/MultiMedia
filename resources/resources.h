@@ -3,7 +3,7 @@
 
 #include <core/resourceview.h>
 
-REGISTER_COMMON_RESOURCE_TYPES(image, "image,bmp,gif,jpg,jpeg,png", {}, {}) // copyable
+REGISTER_COMMON_RESOURCE_TYPES(image, "image,bmp,gif,jpg,jpeg,png,svg,vector,animated", {}, {}) // copyable
 REGISTER_COMMON_RESOURCE_TYPES(text, "text,txt,js,cpp,h,qss,css", {}, ResourceView::CanCopy)
 REGISTER_COMMON_RESOURCE_TYPES(textinput, "textinput", {}, ResourceView::CanCopy)
 REGISTER_COMMON_RESOURCE_TYPES(doc, "ppt,pptx,html,htm,swf", {}, ResourceView::CanCopy)

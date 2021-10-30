@@ -1,4 +1,4 @@
-QT += gui widgets webenginewidgets multimediawidgets quickwidgets
+QT += gui widgets webenginewidgets multimediawidgets quickwidgets svg
 
 win32 { QT += axcontainer }
 

@@ -6,6 +6,8 @@
         "PptxControl/1.0",
         "WebControl/1.0",
         "ImageControl/1.0",
+        "VectorControl/1.0",
+        "AnimatedControl/1.0",
         "TextControl/1.0",
         "VideoControl/1.0",
         "VideoControl/1.0",
@@ -43,7 +45,19 @@
         "meta": "ImageControl/1.0",
         "type": "Control/1.0",
         "attrs": {
-            "mineType": "image,bmp,gif,jpg,jpeg,png,svg"
+            "mineType": "image,bmp,jpg,jpeg,png"
+        }
+    }, {
+        "meta": "VectorControl/1.0",
+        "type": "Control/1.0",
+        "attrs": {
+            "mineType": "vector,svg"
+        }
+    }, {
+        "meta": "AnimatedControl/1.0",
+        "type": "Control/1.0",
+        "attrs": {
+            "mineType": "animated,gif"
         }
     }, {
         "meta": "TextControl/1.0",

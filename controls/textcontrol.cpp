@@ -6,6 +6,7 @@
 #include <QMouseEvent>
 #include <QScrollBar>
 #include <QMimeData>
+#include <QDir>
 
 TextControl::TextControl(ResourceView * res)
     : WidgetControl(res, {WithSelectBar, ExpandScale, LayoutScale, FixedOnCanvas})
@@ -26,6 +27,7 @@ QWidget *TextControl::createWidget(ControlView *parent)
     textEdit->resize(1024, 600);
     textEdit->viewport()->setMouseTracking(false);
     textEdit->viewport()->installEventFilter(this);
+    textEdit->document()->setBaseUrl(res_->url());
     return textEdit;
 }
 
@@ -42,7 +44,13 @@ void TextControl::attached()
 void TextControl::onText(QString text)
 {
     QTextEdit* textEdit = qobject_cast<QTextEdit*>(widget_);
-    textEdit->setText(text);
+#if QT_VERSION >= QT_VERSION_CHECK(5, 14, 0)
+    if (res_->resource()->type() == "markdown"
+            || res_->resource()->type() == "md")
+        textEdit->setMarkdown(text);
+    else
+#endif
+        textEdit->setText(text);
 }
 
 void TextControl::copy(QMimeData &data)

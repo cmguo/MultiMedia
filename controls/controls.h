@@ -34,7 +34,7 @@ REGISTER_CONTROL(StrokeControl, "glstroke")
 #else
 REGISTER_CONTROL(WebControl, "htm,html,http,https,chrome,swf")
 #endif
-REGISTER_CONTROL(TextControl, "text,txt,js,cpp,h,qss,css")
+REGISTER_CONTROL(TextControl, "text,txt,js,cpp,h,qss,css,md,markdown")
 REGISTER_CONTROL(TextInputControl, "textinput")
 REGISTER_CONTROL(GraphvizControl, "graphviz,dot")
 

@@ -63,7 +63,7 @@
         "meta": "TextControl/1.0",
         "type": "Control/1.0",
         "attrs": {
-            "mineType": "text,txt,js,cpp,h,qss,css"
+            "mineType": "text,txt,js,cpp,h,qss,css,md,markdown"
         }
     }, {
         "meta": "TextInputControl/1.0",
